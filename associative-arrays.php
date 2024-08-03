@@ -62,8 +62,28 @@
 
     return $filteredItems;
   }
+  function lamdaFilter($items, $fn)
+  {
+    $filteredItems = [];
+
+    foreach ($items as $item) {
+      if ($fn($item)) {
+        $filteredItems[] = $item;
+      }
+    }
+
+    return $filteredItems;
+  }
 
   $filteredBooks = filter($books, 'author', 'Andy Wier');
+
+  $lamdaFilteredBooks = lamdaFilter($books, function ($book) {
+    return $book['author'] === 'Andy Wier';
+  });
+
+  $arrayFilteredBooks = array_filter($books, function ($book) {
+    return $book['author'] === 'Andy Wier';
+  });
 
   ?>
 
@@ -103,6 +123,28 @@
   <h1><?= "Recommended Books(PHP asso. array with annonymous function)" ?></h1>
   <ul>
     <?php foreach ($filteredBooks as $book) : ?>
+      <li>
+        <a href=" <?= $book['purchaseUrl'] ?>">
+          <?= $book['name'] ?> (<?= $book['releaseYear'] ?>) - By <?= $book['author'] ?>
+        </a>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+
+  <h1><?= "Recommended Books(PHP asso. array with lamda function)" ?></h1>
+  <ul>
+    <?php foreach ($lamdaFilteredBooks as $book) : ?>
+      <li>
+        <a href=" <?= $book['purchaseUrl'] ?>">
+          <?= $book['name'] ?> (<?= $book['releaseYear'] ?>) - By <?= $book['author'] ?>
+        </a>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+
+  <h1><?= "Recommended Books(PHP asso. array with array_filter)" ?></h1>
+  <ul>
+    <?php foreach ($arrayFilteredBooks as $book) : ?>
       <li>
         <a href=" <?= $book['purchaseUrl'] ?>">
           <?= $book['name'] ?> (<?= $book['releaseYear'] ?>) - By <?= $book['author'] ?>
